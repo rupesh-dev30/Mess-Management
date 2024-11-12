@@ -23,4 +23,10 @@ export const dummyProduct = [
     image: require('../assets/images/sample4.jpg'),
     price: 30
   },
+  {
+    id: 5,
+    name: "Product 5",
+    image: require('../assets/images/sample4.jpg'),
+    price: 30
+  },
 ]
