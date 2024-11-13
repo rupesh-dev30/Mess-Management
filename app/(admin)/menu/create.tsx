@@ -64,7 +64,6 @@ export default function create() {
     if (!validateInput()) {
       return;
     }
-
     console.warn("Updating Product", name);
 
     reset();
@@ -74,7 +73,6 @@ export default function create() {
     if (!validateInput()) {
       return;
     }
-
     reset();
   };
 
