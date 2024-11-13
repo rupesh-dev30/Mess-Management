@@ -1,16 +1,21 @@
-import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import Button from "@/components/application/Button";
 import { dummyProduct } from "@/data/dummy";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 export default function create() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [error, setError] = useState("");
-  const [image, setImage] = useState<string | null>("https://cdn-icons-png.flaticon.com/512/1598/1598638.png");
+  const [image, setImage] = useState<string | null>(
+    "https://cdn-icons-png.flaticon.com/512/1598/1598638.png"
+  );
+
+  const { id } = useLocalSearchParams();
+  const isUpdating = !!id;
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -47,6 +52,25 @@ export default function create() {
     return true;
   };
 
+  const onSubmit = () => {
+    if (isUpdating) {
+      // Update existing item
+      onUpdateCreate();
+    } else {
+      onCreate();
+    }
+  };
+
+  const onUpdateCreate = () => {
+    if (!validateInput()) {
+      return;
+    }
+
+    console.warn("Updating Product", name);
+
+    reset();
+  };
+
   const onCreate = () => {
     if (!validateInput()) {
       return;
@@ -55,10 +79,30 @@ export default function create() {
     reset();
   };
 
+  const onDelete = () => {
+    console.warn("DELETE");
+  }
+
+  const confirmDelete = () => {
+    Alert.alert("Confirm","Are you sure you want to delete this product", [
+      {
+        text: "Cancel",
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: onDelete
+      }
+    ]);
+  }
+
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{title: "Create Product"}}/>
-      <Image source={{uri: image }} style={styles.image} />
+      <Stack.Screen
+        options={{ title: isUpdating ? "Update Product" : "Create Product" }}
+      />
+      {/* @ts-ignore */}
+      <Image source={{ uri: image }} style={styles.image} />
       <Text onPress={pickImage} style={styles.selectImageButton}>
         Select Image
       </Text>
@@ -80,7 +124,8 @@ export default function create() {
         onChangeText={setPrice}
       />
       <Text style={{ color: "red", paddingTop: 10 }}>{error}</Text>
-      <Button onPress={onCreate} text="Create" />
+      <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
+      {isUpdating ? <Text onPress={confirmDelete} style={styles.textButton}>Delete</Text> : ""}
     </View>
   );
 }
@@ -114,4 +159,10 @@ const styles = StyleSheet.create({
     color: Colors.light.tint,
     marginVertical: 10,
   },
+  textButton: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Colors.light.tint,
+    marginTop: 5
+  }
 });
