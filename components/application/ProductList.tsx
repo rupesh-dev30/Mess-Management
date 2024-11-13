@@ -15,7 +15,7 @@ interface Props {
 
 export default function Product({ product }: Props) {
   return (
-    <Link href={`/${product.id}`} asChild>
+    <Link href={`/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image source={product.image} style={styles.image} />
         <Text style={styles.title}>{product.name}</Text>

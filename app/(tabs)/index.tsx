@@ -1,22 +1,7 @@
-import { FlatList, Image, StyleSheet } from "react-native";
-import { Text, View } from "@/components/Themed";
-import Product from "@/components/application/ProductList";
-import { dummyProduct } from "@/data/dummy";
+import { View, Text } from "react-native";
+import React from "react";
+import { Redirect } from "expo-router";
 
-export default function MenuScreen() {
-  return (
-    <FlatList
-      data={dummyProduct}
-      renderItem={({ item }) => <Product product={item} />}
-      numColumns={2}
-      contentContainerStyle={{gap: 5}}
-      style={styles.flat}
-    />
-  );
+export default function index() {
+  return <Redirect href={"/menu/"} />;
 }
-
-const styles = StyleSheet.create({
-  flat: {
-    backgroundColor: "#fff",
-  }
-});
