@@ -51,7 +51,6 @@ export type OrderItem = {
   product_id: number;
   products: Product;
   order_id: number;
-  size: PizzaSize;
   quantity: number;
 };
 
