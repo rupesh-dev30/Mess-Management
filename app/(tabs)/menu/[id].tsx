@@ -1,11 +1,14 @@
 import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { dummyProduct } from "@/data/dummy";
 import Button from "@/components/application/Button";
+import { useCart } from "@/app/providers/CartProvider";
 
 export default function ProductDetails() {
   const { id } = useLocalSearchParams();
+  const router = useRouter();
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const product = dummyProduct.find((item) => item.id.toString() === id);
@@ -17,14 +20,18 @@ export default function ProductDetails() {
     }
   };
   const addToCart = () => {
-    console.warn("Cart Updated");
+    if (!product) {
+      return;
+    }
+    addItem(product);
+    router.push('/cart')
   };
 
   if (!product) {
     return <Text>Product not found</Text>;
   }
 
-  const totalPrice = product.price * quantity;
+  // const totalPrice = product.price * quantity;
 
   return (
     <View style={styles.container}>
@@ -32,7 +39,7 @@ export default function ProductDetails() {
       <Image source={product.image} style={styles.image} />
       <Text style={styles.price}>Price : ₹{product.price}</Text>
 
-      <View style={styles.quantityContainer}>
+      {/* <View style={styles.quantityContainer}>
         <TouchableOpacity
           onPress={decreaseQuantity}
           disabled={quantity <= 1}
@@ -52,12 +59,12 @@ export default function ProductDetails() {
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
-      <View style={styles.totalPriceContainer}>
+      {/* <View style={styles.totalPriceContainer}>
         <Text style={styles.totalPriceLabel}>Total Price:</Text>
         <Text style={styles.totalPrice}>₹{totalPrice}</Text>
-      </View>
+      </View> */}
 
       <View style={styles.cartButtonContainer}>
         <Button onPress={addToCart} text="Add to cart" />
