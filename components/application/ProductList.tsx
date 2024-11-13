@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 
 interface ProductData {
   id: number;
@@ -14,8 +14,11 @@ interface Props {
 }
 
 export default function Product({ product }: Props) {
+  const segments = useSegments();
+
   return (
-    <Link href={`/menu/${product.id}`} asChild>
+    // @ts-ignore
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image source={product.image} style={styles.image} />
         <Text style={styles.title}>{product.name}</Text>
