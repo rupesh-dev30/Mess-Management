@@ -20,7 +20,8 @@ export default function Product({ product }: Props) {
     // @ts-ignore
     <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
-        <Image source={product.image} style={styles.image} />
+        {/* @ts-ignore */}
+        <Image source={{ uri: product.image }} style={styles.image} />
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>Rs.{product.price}</Text>
       </Pressable>

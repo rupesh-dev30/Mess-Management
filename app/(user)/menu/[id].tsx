@@ -1,70 +1,43 @@
-import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import React from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { dummyProduct } from "@/data/dummy";
 import Button from "@/components/application/Button";
 import { useCart } from "@/app/providers/CartProvider";
+import { gerProductById, getProductsList } from "@/app/api";
 
 export default function ProductDetails() {
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+
+  const { data: product, error, isLoading } = gerProductById(id);
   const router = useRouter();
   const { addItem } = useCart();
-  const [quantity, setQuantity] = useState(1);
-
-  const product = dummyProduct.find((item) => item.id.toString() === id);
-
-  const increaseQuantity = () => setQuantity((prev) => prev + 1);
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
-    }
-  };
-  const addToCart = () => {
-    if (!product) {
-      return;
-    }
-    addItem(product);
-    router.push('/cart')
-  };
 
   if (!product) {
     return <Text>Product not found</Text>;
   }
 
-  // const totalPrice = product.price * quantity;
+  const addToCart = () => {
+    if (!product) {
+      return;
+    }
+    addItem(product);
+    router.push("/cart");
+  };
 
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Error: Failed to fetch products data</Text>;
+  }
+  
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product.name }} />
-      <Image source={product.image} style={styles.image} />
+      <Image source={{ uri: product.image }} style={styles.image} />
       <Text style={styles.price}>Price : ₹{product.price}</Text>
-
-      {/* <View style={styles.quantityContainer}>
-        <TouchableOpacity
-          onPress={decreaseQuantity}
-          disabled={quantity <= 1}
-          style={[
-            styles.quantityButton,
-            quantity <= 1 && styles.disabledButton,
-          ]}
-        >
-          <Text style={styles.buttonText}>-</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.quantityText}>{quantity}</Text>
-
-        <TouchableOpacity
-          onPress={increaseQuantity}
-          style={styles.quantityButton}
-        >
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      </View> */}
-
-      {/* <View style={styles.totalPriceContainer}>
-        <Text style={styles.totalPriceLabel}>Total Price:</Text>
-        <Text style={styles.totalPrice}>₹{totalPrice}</Text>
-      </View> */}
 
       <View style={styles.cartButtonContainer}>
         <Button onPress={addToCart} text="Add to cart" />

@@ -62,6 +62,6 @@ export type Profile = {
 export type Product = {
   id: number;
   price: number;
-  image: object | undefined;
+  image: string | null;
   name: string;
 };
