@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
-import { OrderItem } from '@/types/types';
+import { OrderItem, Tables } from '@/types/types';
 import Colors from '@/constants/Colors';
 
 
 type OrderItemListItemProps = {
-  item: OrderItem;
+  item: Tables<'orders'>;
 };
 
 const OrderItemList = ({ item }: OrderItemListItemProps) => {
   return (
     <View style={styles.container}>
       <Image
-        source={item.products.image}
+        source={{uri: item.products.image}}
         style={styles.image}
         resizeMode="contain"
       />

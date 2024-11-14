@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
-import { getProductsList } from "@/app/api";
+import { getProductsList } from "@/app/api/products";
 import ProductList from "@/components/application/ProductList";
 
 export default function MenuScreen() {

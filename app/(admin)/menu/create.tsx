@@ -9,7 +9,7 @@ import {
   deleteProduct,
   getProductById,
   updateProduct,
-} from "@/app/api";
+} from "@/app/api/products";
 
 export default function create() {
   const [name, setName] = useState("");
@@ -20,7 +20,9 @@ export default function create() {
   );
 
   const { id: idString } = useLocalSearchParams();
-  const id = parseFloat(typeof idString === "string" ? idString : idString?.[0]);
+  const id = parseFloat(
+    typeof idString === "string" ? idString : idString?.[0]
+  );
 
   const isUpdating = !!id;
   const router = useRouter();

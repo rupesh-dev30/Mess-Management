@@ -1,10 +1,17 @@
-import { Image, StyleSheet, Text, View, Pressable, ActivityIndicator } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCart } from "@/app/providers/CartProvider";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
-import { getProductById } from "@/app/api";
+import { getProductById } from "@/app/api/products";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
@@ -29,7 +36,7 @@ export default function ProductDetails() {
     }
     addItem(product);
     router.push("/cart");
-  }
+  };
 
   if (!product) {
     return <Text>Product not found</Text>;
@@ -67,12 +74,12 @@ export default function ProductDetails() {
       />
 
       <Stack.Screen options={{ title: product.name }} />
-      <Image source={{uri: product.image}} style={styles.image} />
+      <Image source={{ uri: product.image }} style={styles.image} />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>Price : ₹{product.price}</Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
