@@ -5,7 +5,7 @@ import { Link, useSegments } from "expo-router";
 interface ProductData {
   id: number;
   price: number;
-  image: object | undefined;
+  image: string | null;
   name: string;
 }
 
@@ -13,7 +13,7 @@ interface Props {
   product: ProductData;
 }
 
-export default function Product({ product }: Props) {
+export default function ProductList({ product }: Props) {
   const segments = useSegments();
 
   return (

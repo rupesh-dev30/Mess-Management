@@ -1,6 +1,6 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
-import Product from "@/components/application/ProductList";
 import { getProductsList } from "@/app/api";
+import ProductList from "@/components/application/ProductList";
 
 export default function MenuScreen() {
   const { data: products, error, isLoading } = getProductsList();
@@ -16,7 +16,7 @@ export default function MenuScreen() {
   return (
     <FlatList
       data={products}
-      renderItem={({ item }) => <Product product={item} />}
+      renderItem={({ item }) => <ProductList product={item} />}
       numColumns={2}
       contentContainerStyle={{ gap: 5 }}
       columnWrapperStyle={{ gap: 5 }}

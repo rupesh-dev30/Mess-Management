@@ -15,10 +15,15 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
   return (
     <View style={styles.container}>
       <Image
-        source={cartItem.product.image || undefined}
+        source={
+          cartItem.product.image
+            ? { uri: cartItem.product.image }
+            : require("../../assets/images/no-image.jpg")
+        }
         style={styles.image}
         resizeMode="contain"
       />
+
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>{cartItem.product.name}</Text>
         <View style={styles.subtitleContainer}>
@@ -29,14 +34,18 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
       </View>
       <View style={styles.quantitySelector}>
         <FontAwesome
-          onPress={() => {updateQuantity(cartItem.id, -1)}}
+          onPress={() => {
+            updateQuantity(cartItem.id, -1);
+          }}
           name="minus"
           color="gray"
           style={{ padding: 5 }}
         />
         <Text style={styles.quantity}>{cartItem.quantity}</Text>
         <FontAwesome
-          onPress={() => {updateQuantity(cartItem.id, 1)}}
+          onPress={() => {
+            updateQuantity(cartItem.id, 1);
+          }}
           name="plus"
           color="gray"
           style={{ padding: 5 }}
