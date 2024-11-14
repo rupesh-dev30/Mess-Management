@@ -4,6 +4,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import OrderList from "@/components/application/OrderList";
 import OrderItemList from "@/components/application/OrderItemList";
 import { getOrderById } from "@/app/api/orders";
+import { useUpdateOrderSubscription } from "@/app/api/orders/subscriptions";
 
 export default function OrderDetails() {
   const { id: idString } = useLocalSearchParams();
@@ -11,11 +12,13 @@ export default function OrderDetails() {
 
   const { data: order, isLoading, error } = getOrderById(id);
 
+  useUpdateOrderSubscription(id);
+
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
-  if (error) {
+  if (error || !order) {
     return <Text>Error : Failed to fetched the detail of order</Text>;
   }
 
