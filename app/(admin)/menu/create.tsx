@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Button from "@/components/application/Button";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { createProduct } from "@/app/api";
 
 export default function create() {
   const [name, setName] = useState("");
@@ -15,13 +16,16 @@ export default function create() {
 
   const { id } = useLocalSearchParams();
   const isUpdating = !!id;
+  const router = useRouter();
+
+  const { mutate: createItem } = createProduct();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [12, 10],
+      aspect: [12,12],
       quality: 1,
     });
 
@@ -73,25 +77,32 @@ export default function create() {
     if (!validateInput()) {
       return;
     }
-    reset();
+    
+    // Save in database
+    createItem({ name, price: parseFloat(price), image }, {
+      onSuccess: () => {
+        reset();
+        router.back();
+      }
+    });
   };
 
   const onDelete = () => {
     console.warn("DELETE");
-  }
+  };
 
   const confirmDelete = () => {
-    Alert.alert("Confirm","Are you sure you want to delete this product", [
+    Alert.alert("Confirm", "Are you sure you want to delete this product", [
       {
         text: "Cancel",
       },
       {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: onDelete
-      }
+        text: "Delete",
+        style: "destructive",
+        onPress: onDelete,
+      },
     ]);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -122,7 +133,13 @@ export default function create() {
       />
       <Text style={{ color: "red", paddingTop: 10 }}>{error}</Text>
       <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
-      {isUpdating ? <Text onPress={confirmDelete} style={styles.textButton}>Delete</Text> : ""}
+      {isUpdating ? (
+        <Text onPress={confirmDelete} style={styles.textButton}>
+          Delete
+        </Text>
+      ) : (
+        ""
+      )}
     </View>
   );
 }
@@ -160,6 +177,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: Colors.light.tint,
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
