@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import { Link, useSegments } from "expo-router";
+import { Tables } from "@/types/types";
 
 interface ProductData {
   id: number;
@@ -10,7 +11,7 @@ interface ProductData {
 }
 
 interface Props {
-  product: ProductData;
+  product: Tables<'products'>;
 }
 
 export default function ProductList({ product }: Props) {
