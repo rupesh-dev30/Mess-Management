@@ -1,7 +1,12 @@
-import { View, Text, FlatList, Pressable, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import React from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
-import orders from "@/data/orders";
 import OrderList from "@/components/application/OrderList";
 import OrderItemList from "@/components/application/OrderItemList";
 import Colors from "@/constants/Colors";
@@ -17,7 +22,7 @@ export default function OrderDetails() {
     return <ActivityIndicator />;
   }
 
-  if (error) {
+  if (error || !order) {
     return <Text>Error : Failed to fetched the detail of order</Text>;
   }
 

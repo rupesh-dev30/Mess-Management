@@ -6,7 +6,7 @@ import CartListItem from "@/components/application/CartList";
 import Button from "@/components/application/Button";
 
 export default function Cart() {
-  const { items, total } = useCart();
+  const { items, total, checkout } = useCart();
 
   if (!items || items.length === 0) {
     return (
@@ -25,7 +25,7 @@ export default function Cart() {
         contentContainerStyle={[{ paddingBottom: 16 }, { gap: 10 }]}
       />
       <Text style={{fontSize: 20, fontWeight: "bold"}}>Total: &#8377;{total}</Text>
-      <Button text="Checkout" />
+      <Button text="Checkout" onPress={checkout}/>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );

@@ -1,6 +1,7 @@
 import { useAuth } from "@/app/providers/AuthProvider";
 import { supabase } from "@/lib/supabase";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { InsertTables } from "@/types/types";
 
 export const getAdminOrderList = ({ archived = false }) => {
   const checkStatus = archived
@@ -13,7 +14,8 @@ export const getAdminOrderList = ({ archived = false }) => {
       const { data, error } = await supabase
         .from("orders")
         .select("*")
-        .in("status", checkStatus);
+        .in("status", checkStatus)
+        .order("created_at", { ascending: false });
 
       if (error) {
         throw new Error(error.message);
@@ -47,18 +49,45 @@ export const getUserOrderList = () => {
 
 export const getOrderById = (id: number) => {
   return useQuery({
-    queryKey: ["order", id],
+    queryKey: ["orders", id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("*")
+        .select("*, order_items(*, products(*))")
         .eq("id", id)
-        .single();
 
       if (error) {
         throw new Error(error.message);
       }
-      return data;
+      return data?.[0];
+    },
+  });
+};
+
+export const createOrder = () => {
+  const queryClient = useQueryClient();
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useMutation({
+    async mutationFn(data: InsertTables<"orders">) {
+      const { data: newOrder, error } = await supabase
+        .from("orders")
+        .insert({ ...data, user_id: userId })
+        .select()
+        .single();
+
+      if (error) {
+        return new Error(error.message);
+      }
+      return newOrder;
+    },
+    async onSuccess() {
+      // refetch data after mutation
+      await queryClient.invalidateQueries(["orders"]);
+    },
+    onError(error) {
+      console.error(error);
     },
   });
 };

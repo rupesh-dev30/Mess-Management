@@ -50,7 +50,7 @@ export const createProduct = () => {
       if (error) {
         return new Error(error.message);
       }
-      return data;
+      return newProduct;
     },
     async onSuccess() {
       // refetch data after mutation
