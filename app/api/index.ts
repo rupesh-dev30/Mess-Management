@@ -15,7 +15,7 @@ export const getProductsList = () => {
   });
 };
 
-export const gerProductById = (id: number) => {
+export const getProductById = (id: number) => {
   return useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
@@ -58,6 +58,38 @@ export const createProduct = () => {
     },
     onError(error) {
       console.error(error);
-    }
+    },
+  });
+};
+
+export const updateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(data: any) {
+      const { data: updatedProduct, error } = await supabase
+        .from("products")
+        .update({
+          name: data.name,
+          price: data.price,
+          image: data.image,
+        })
+        .eq("id", data.id)
+        .select()
+        .single();
+
+      if (error) {
+        return new Error(error.message);
+      }
+      return data;
+    },
+    async onSuccess({ id }) {
+      // refetch data after mutation
+      await queryClient.invalidateQueries(["products"]);
+      await queryClient.invalidateQueries(["product", id]);
+    },
+    onError(error) {
+      console.error(error);
+    },
   });
 };

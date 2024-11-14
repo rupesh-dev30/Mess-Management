@@ -4,7 +4,7 @@ import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCart } from "@/app/providers/CartProvider";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
-import { gerProductById } from "@/app/api";
+import { getProductById } from "@/app/api";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
@@ -14,7 +14,7 @@ export default function ProductDetails() {
 
   const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
 
-  const { data: product, error, isLoading } = gerProductById(id);
+  const { data: product, error, isLoading } = getProductById(id);
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => {

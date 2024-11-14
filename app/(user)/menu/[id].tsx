@@ -3,13 +3,13 @@ import React from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import Button from "@/components/application/Button";
 import { useCart } from "@/app/providers/CartProvider";
-import { gerProductById, getProductsList } from "@/app/api";
+import { getProductById, getProductsList } from "@/app/api";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
   const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
 
-  const { data: product, error, isLoading } = gerProductById(id);
+  const { data: product, error, isLoading } = getProductById(id);
   const router = useRouter();
   const { addItem } = useCart();
 

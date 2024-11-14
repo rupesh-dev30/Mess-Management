@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/application/Button";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { createProduct } from "@/app/api";
+import { createProduct, getProductById, updateProduct } from "@/app/api";
 
 export default function create() {
   const [name, setName] = useState("");
@@ -14,18 +14,30 @@ export default function create() {
     "https://cdn-icons-png.flaticon.com/512/1598/1598638.png"
   );
 
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+
   const isUpdating = !!id;
   const router = useRouter();
 
   const { mutate: createItem } = createProduct();
+  const { mutate: updateItem } = updateProduct();
+  const { data: updatingProduct } = getProductById(id);
+
+  useEffect(() => {
+    if (updatingProduct) {
+      setName(updatingProduct.name);
+      setPrice(updatingProduct.price.toString());
+      setImage(updatingProduct.image);
+    }
+  }, [updatingProduct]);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [12,12],
+      aspect: [12, 12],
       quality: 1,
     });
 
@@ -65,26 +77,36 @@ export default function create() {
   };
 
   const onUpdateCreate = () => {
+    
     if (!validateInput()) {
       return;
     }
-    console.warn("Updating Product", name);
-
-    reset();
+    updateItem(
+      { name, price: parseFloat(price), image, id },
+      {
+        onSuccess: () => {
+          reset();
+          router.back();
+        },
+      }
+    );
   };
 
   const onCreate = () => {
     if (!validateInput()) {
       return;
     }
-    
+
     // Save in database
-    createItem({ name, price: parseFloat(price), image }, {
-      onSuccess: () => {
-        reset();
-        router.back();
+    createItem(
+      { name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          reset();
+          router.back();
+        },
       }
-    });
+    );
   };
 
   const onDelete = () => {
