@@ -23,7 +23,7 @@ export default function Product({ product }: Props) {
         {/* @ts-ignore */}
         <Image source={{ uri: product.image }} style={styles.image} />
         <Text style={styles.title}>{product.name}</Text>
-        <Text style={styles.price}>Rs.{product.price}</Text>
+        <Text style={styles.price}>₹{product.price}</Text>
       </Pressable>
     </Link>
   );
