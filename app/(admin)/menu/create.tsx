@@ -4,7 +4,12 @@ import Button from "@/components/application/Button";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { createProduct, getProductById, updateProduct } from "@/app/api";
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  updateProduct,
+} from "@/app/api";
 
 export default function create() {
   const [name, setName] = useState("");
@@ -15,13 +20,14 @@ export default function create() {
   );
 
   const { id: idString } = useLocalSearchParams();
-  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+  const id = parseFloat(typeof idString === "string" ? idString : idString?.[0]);
 
   const isUpdating = !!id;
   const router = useRouter();
 
   const { mutate: createItem } = createProduct();
   const { mutate: updateItem } = updateProduct();
+  const { mutate: deleteItem } = deleteProduct();
   const { data: updatingProduct } = getProductById(id);
 
   useEffect(() => {
@@ -77,7 +83,6 @@ export default function create() {
   };
 
   const onUpdateCreate = () => {
-    
     if (!validateInput()) {
       return;
     }
@@ -110,7 +115,12 @@ export default function create() {
   };
 
   const onDelete = () => {
-    console.warn("DELETE");
+    deleteItem(id, {
+      onSuccess: () => {
+        reset();
+        router.replace("/(admin)");
+      },
+    });
   };
 
   const confirmDelete = () => {

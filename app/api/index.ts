@@ -93,3 +93,24 @@ export const updateProduct = () => {
     },
   });
 };
+
+export const deleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    async mutationFn(id: number) {
+      const { data, error } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        return new Error(error.message);
+      }
+    },
+    async onSuccess() {
+      // refetch data after mutation
+      await queryClient.invalidateQueries(["products"]);
+    },
+  });
+};

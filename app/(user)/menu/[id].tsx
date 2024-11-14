@@ -3,7 +3,7 @@ import React from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import Button from "@/components/application/Button";
 import { useCart } from "@/app/providers/CartProvider";
-import { getProductById, getProductsList } from "@/app/api";
+import { getProductById } from "@/app/api";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
