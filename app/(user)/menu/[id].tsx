@@ -1,10 +1,9 @@
-import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import React from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import Button from "@/components/application/Button";
 import { useCart } from "@/app/providers/CartProvider";
 import { getProductById } from "@/app/api/products";
-import { supabase } from "@/lib/supabase";
 import RemoteImage from "@/components/application/RemoteImage";
 import { defaultFoodImage } from "@/constants/Colors";
 
@@ -36,14 +35,6 @@ export default function ProductDetails() {
     return <Text>Error: Failed to fetch products data</Text>;
   }
 
-  async function signOut() {
-    try {
-      await supabase.auth.signOut();
-    } catch (error) {
-      console.warn(error);
-    }
-  }
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product.name }} />
@@ -53,7 +44,6 @@ export default function ProductDetails() {
       <View style={styles.cartButtonContainer}>
         <Button onPress={addToCart} text="Add to cart" />
       </View>
-      <Button onPress={signOut} text={"Sign out"} />
     </View>
   );
 }

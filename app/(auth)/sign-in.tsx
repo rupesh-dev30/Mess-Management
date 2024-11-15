@@ -1,28 +1,37 @@
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
-import React, { useState } from 'react';
-import { Link, Stack } from 'expo-router';
-import Button from '@/components/application/Button';
-import Colors from '@/constants/Colors';
-import { supabase } from '@/lib/supabase';
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
+import React, { useState } from "react";
+import { Link, Stack, useRouter } from "expo-router";
+import Button from "@/components/application/Button";
+import Colors from "@/constants/Colors";
+import { supabase } from "@/lib/supabase";
 
 const SignInScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function signInWithEmail() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if(error) {
-      Alert.alert(error.message);
+      if (!error) {
+        router.push("/");
+      }
+    } catch (error) {
+      Alert.alert("Error in login");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false)
   }
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Sign in' }} />
+      <Stack.Screen options={{ title: "Sign in" }} />
 
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -41,7 +50,11 @@ const SignInScreen = () => {
         secureTextEntry
       />
 
-      <Button text={loading ? "Signing in..." : "Sign in"} disabled={loading} onPress={signInWithEmail}/>
+      <Button
+        text={loading ? "Signing in..." : "Sign in"}
+        disabled={loading}
+        onPress={signInWithEmail}
+      />
       {/* @ts-ignore */}
       <Link href="/sign-up" style={styles.textButton}>
         Create an account
@@ -53,24 +66,24 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
     flex: 1,
   },
   label: {
-    color: 'gray',
+    color: "gray",
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     padding: 10,
     marginTop: 5,
     marginBottom: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 5,
   },
   textButton: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
+    alignSelf: "center",
+    fontWeight: "bold",
     color: Colors.light.tint,
     marginVertical: 10,
   },

@@ -19,7 +19,7 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
         .download(path);
 
       if (error) {
-        console.log(error);
+        console.warn(error);
       }
 
       if (data) {

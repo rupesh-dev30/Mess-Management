@@ -19,8 +19,10 @@ interface Props {
 export default function ProductList({ product }: Props) {
   const segments = useSegments();
 
+  type Route = `/menu/${number}`;
+
   return (
-    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
+    <Link href={`/menu/${product.id}` as Route} asChild>
       <Pressable style={styles.container}>
         <RemoteImage
           path={product?.image}
@@ -38,7 +40,8 @@ export default function ProductList({ product }: Props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 0,
     flex: 1,
   },
   title: {
@@ -55,6 +58,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    borderRadius: 10,
   },
 });
