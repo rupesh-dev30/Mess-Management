@@ -2,7 +2,8 @@ import { View, Text } from "react-native";
 import React, { useState } from "react";
 import Button from "@/components/application/Button";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { useAuth } from "../providers/AuthProvider";
 
 export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);

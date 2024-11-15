@@ -21,6 +21,8 @@ export default function index() {
     return <Redirect href={"/(user)"} />;
   }
 
+  
+
   async function signOut() {
     setSignOutLoading(true);
     try {
