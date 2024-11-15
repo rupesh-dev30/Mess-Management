@@ -5,6 +5,8 @@ import Button from "@/components/application/Button";
 import { useCart } from "@/app/providers/CartProvider";
 import { getProductById } from "@/app/api/products";
 import { supabase } from "@/lib/supabase";
+import RemoteImage from "@/components/application/RemoteImage";
+import { defaultFoodImage } from "@/constants/Colors";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
@@ -45,7 +47,7 @@ export default function ProductDetails() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product.name }} />
-      <Image source={{ uri: product.image }} style={styles.image} />
+      <RemoteImage path={product?.image} fallback={defaultFoodImage} style={styles.image} />
       <Text style={styles.price}>Price : ₹{product.price}</Text>
 
       <View style={styles.cartButtonContainer}>

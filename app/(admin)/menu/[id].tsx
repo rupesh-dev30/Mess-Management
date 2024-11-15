@@ -10,8 +10,9 @@ import React, { useState } from "react";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCart } from "@/app/providers/CartProvider";
 import { FontAwesome } from "@expo/vector-icons";
-import Colors from "@/constants/Colors";
+import Colors, { defaultFoodImage } from "@/constants/Colors";
 import { getProductById } from "@/app/api/products";
+import RemoteImage from "@/components/application/RemoteImage";
 
 export default function ProductDetails() {
   const { id: idString } = useLocalSearchParams();
@@ -74,7 +75,11 @@ export default function ProductDetails() {
       />
 
       <Stack.Screen options={{ title: product.name }} />
-      <Image source={{ uri: product.image }} style={styles.image} />
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultFoodImage}
+        style={styles.image}
+      />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>Price : ₹{product.price}</Text>
     </View>

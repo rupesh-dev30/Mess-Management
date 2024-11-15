@@ -10,14 +10,16 @@ import {
   getProductById,
   updateProduct,
 } from "@/app/api/products";
+import { randomUUID } from "expo-crypto";
+import { supabase } from "@/lib/supabase";
+import { decode } from "base64-arraybuffer";
+import * as FileSystem from "expo-file-system";
 
 export default function create() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [error, setError] = useState("");
-  const [image, setImage] = useState<string | null>(
-    "https://cdn-icons-png.flaticon.com/512/1598/1598638.png"
-  );
+  const [image, setImage] = useState<string | null>(null);
 
   const { id: idString } = useLocalSearchParams();
   const id = parseFloat(
@@ -56,6 +58,26 @@ export default function create() {
     }
   };
 
+  const uploadImage = async () => {
+    if (!image?.startsWith("file://")) {
+      return;
+    }
+
+    const base64 = await FileSystem.readAsStringAsync(image, {
+      encoding: "base64",
+    });
+    const filePath = `${randomUUID()}.png`;
+    const contentType = "image/png";
+
+    const { data, error } = await supabase.storage
+      .from("product-images")
+      .upload(filePath, decode(base64), { contentType });
+
+    if (data) {
+      return data.path;
+    }
+  };
+
   const reset = () => {
     setName("");
     setPrice("");
@@ -84,12 +106,15 @@ export default function create() {
     }
   };
 
-  const onUpdateCreate = () => {
+  const onUpdateCreate = async () => {
     if (!validateInput()) {
       return;
     }
+
+    const imagePath = await uploadImage();
+
     updateItem(
-      { name, price: parseFloat(price), image, id },
+      { id, name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
           reset();
@@ -99,14 +124,16 @@ export default function create() {
     );
   };
 
-  const onCreate = () => {
+  const onCreate = async () => {
     if (!validateInput()) {
       return;
     }
 
+    const imagePath = await uploadImage();
+
     // Save in database
     createItem(
-      { name, price: parseFloat(price), image },
+      { name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
           reset();
