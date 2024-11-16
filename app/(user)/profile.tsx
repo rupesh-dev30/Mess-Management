@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import Button from "@/components/application/Button";
 import { supabase } from "@/lib/supabase";
@@ -8,6 +8,7 @@ import { useAuth } from "../providers/AuthProvider";
 export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { isAdmin } = useAuth();
 
   const signOutFn = async () => {
     setIsLoading(true);
@@ -21,9 +22,19 @@ export default function ProfileScreen() {
     }
   };
 
+  const referAdmin = () => {
+    router.push("/(admin)");
+  }
+
   return (
     <View>
-      <Button text="Sign out" onPress={signOutFn} />
+      {isAdmin ? <Button text="Admin" onPress={referAdmin}/> : ""}
+
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <Button text="Sign out" onPress={signOutFn} />
+      )}
     </View>
   );
 }

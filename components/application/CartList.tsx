@@ -22,7 +22,7 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
         resizeMode="contain"
       />
 
-      <View style={{ flex: 1 }}>
+      <View style={styles.contentContainer}>
         <Text style={styles.title}>{cartItem.product.name}</Text>
         <View style={styles.subtitleContainer}>
           <Text style={styles.price}>
@@ -55,41 +55,76 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 5,
+    backgroundColor: '#ebdef0',
+    borderRadius: 12,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 6,
+    marginHorizontal: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  contentContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    marginLeft: 12,
   },
   image: {
-    width: 75,
+    width: 80,
     aspectRatio: 1,
-    alignSelf: "center",
-    marginRight: 10,
+    borderRadius: 8,
+    backgroundColor: "#ebdef0",
   },
   title: {
-    fontWeight: "500",
+    fontWeight: '600',
     fontSize: 16,
-    marginBottom: 5,
+    color: '#1a1a1a',
+    marginBottom: 4,
   },
   subtitleContainer: {
-    flexDirection: "row",
-    gap: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   quantitySelector: {
-    flexDirection: "row",
-    gap: 10,
-    alignItems: "center",
-    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    padding: 4,
+  },
+  quantityButton: {
+    backgroundColor: '#ffffff',
+    borderRadius: 6,
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
   },
   quantity: {
-    fontWeight: "500",
-    fontSize: 18,
+    fontWeight: '600',
+    fontSize: 16,
+    marginHorizontal: 12,
+    minWidth: 20,
+    textAlign: 'center',
   },
   price: {
-    color: Colors.light.tint,
-    fontWeight: "bold",
+    color: "black",
+    fontWeight: '600',
+    fontSize: 15,
   },
 });
 

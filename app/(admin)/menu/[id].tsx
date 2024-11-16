@@ -1,5 +1,4 @@
 import {
-  Image,
   StyleSheet,
   Text,
   View,
@@ -44,11 +43,11 @@ export default function ProductDetails() {
   }
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator size="large" color={Colors.light.tint} />;
   }
 
   if (error) {
-    return <Text>Error: Failed to fetch products data</Text>;
+    return <Text>Error: Failed to fetch product data</Text>;
   }
 
   return (
@@ -57,7 +56,6 @@ export default function ProductDetails() {
         options={{
           title: "Menu",
           headerRight: () => (
-            // @ts-ignore
             <Link href={`/(admin)/menu/create?id=${id}`} asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -65,7 +63,10 @@ export default function ProductDetails() {
                     name="pencil"
                     size={25}
                     color={Colors.light.tint}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    style={{
+                      marginRight: 15,
+                      opacity: pressed ? 0.5 : 1,
+                    }}
                   />
                 )}
               </Pressable>
@@ -81,7 +82,8 @@ export default function ProductDetails() {
         style={styles.image}
       />
       <Text style={styles.title}>{product.name}</Text>
-      <Text style={styles.price}>Price : ₹{product.price}</Text>
+      <Text style={styles.price}>₹{product.price}</Text>
+      <Text style={styles.description}>Savor the delicious taste of our freshly prepared dish, made with high-quality ingredients to bring you a perfect blend of flavors. Ideal for any time of day, this meal will leave you satisfied and craving for more.</Text>
     </View>
   );
 }
@@ -89,27 +91,40 @@ export default function ProductDetails() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    padding: 10,
-    backgroundColor: "white",
+    paddingHorizontal: 15,
+    paddingTop: 20,
+    backgroundColor: "#fff",
   },
   image: {
     width: "100%",
-    height: 400,
-    resizeMode: "cover",
-    borderRadius: 10,
+    height: 350,
+    borderRadius: 15,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#333",
+    textAlign: "center",
     marginBottom: 10,
   },
   price: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginVertical: 10,
+    fontSize: 26,
+    fontWeight: "500",
     textAlign: "center",
+    marginBottom: 20,
     color: "red",
   },
-  title: {
-    fontSize: 34,
-    fontWeight: "bold",
+  description: {
+    fontSize: 16,
+    color: "#666",
     textAlign: "center",
+    marginHorizontal: 15,
+    lineHeight: 22,
+    marginBottom: 30, // Adds spacing before the next section
   },
 });

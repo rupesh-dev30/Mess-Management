@@ -5,7 +5,7 @@ import Colors, { defaultFoodImage } from "@/constants/Colors";
 import RemoteImage from "./RemoteImage";
 
 type OrderItemListItemProps = {
-  item: { products: Tables<"products"> } & Tables<"order_items">;
+  item: Tables<"order_items"> & { products: Tables<"products"> };
 };
 
 const OrderItemList = ({ item }: OrderItemListItemProps) => {
@@ -17,13 +17,13 @@ const OrderItemList = ({ item }: OrderItemListItemProps) => {
         style={styles.image}
         resizeMode="contain"
       />
-      <View style={{ flex: 1 }}>
+     <View style={styles.contentContainer}>
         <Text style={styles.title}>{item.products.name}</Text>
         <View style={styles.subtitleContainer}>
           <Text style={styles.price}>₹{item.products.price.toFixed(2)}</Text>
         </View>
       </View>
-      <View style={styles.quantitySelector}>
+      <View style={styles.quantityContainer}>
         <Text style={styles.quantity}>{item.quantity}</Text>
       </View>
     </View>
@@ -32,41 +32,58 @@ const OrderItemList = ({ item }: OrderItemListItemProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 5,
+    backgroundColor: '#b2babb',
+    borderRadius: 12,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 6,
+    marginHorizontal: 16,
+    shadowColor: '#ebdef0',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 7,
+  },
+  contentContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    marginLeft: 12,
   },
   image: {
-    width: 75,
+    width: 80,
     aspectRatio: 1,
-    alignSelf: "center",
-    marginRight: 10,
+    borderRadius: 8,
+    backgroundColor: '#ebdef0',
   },
   title: {
-    fontWeight: "500",
+    fontWeight: '600',
     fontSize: 16,
-    marginBottom: 5,
+    color: '#1a1a1a',
+    marginBottom: 4,
   },
   subtitleContainer: {
-    flexDirection: "row",
-    gap: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  quantitySelector: {
-    flexDirection: "row",
-    gap: 10,
-    alignItems: "center",
-    marginVertical: 10,
+  quantityContainer: {
+    backgroundColor: '#ebdef0',
+    borderRadius: 8,
+    padding: 8,
+    minWidth: 40,
+    alignItems: 'center',
   },
   quantity: {
-    fontWeight: "500",
-    fontSize: 18,
+    fontWeight: '600',
+    fontSize: 16,
+    color: '#1a1a1a',
   },
   price: {
     color: Colors.light.tint,
-    fontWeight: "bold",
+    fontWeight: '600',
+    fontSize: 15,
   },
 });
 
