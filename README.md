@@ -62,6 +62,17 @@ Make sure you have the following installed:
    npm install
    ```
 
+3. **Set Up Supabase**
+  This project uses Supabase for backend data manipulation. Follow these steps:
+
+  - Create a Supabase project at Supabase.
+  - Copy your Supabase Project URL and anon key.
+  - Create a .env file in the root directory (refer to .env.example)
+  
+  ```bash
+  EXPO_PUBLIC_SUPABASE_URL=<Your Supabase URL>
+  EXPO_PUBLIC_SUPABASE_ANON=<Your Supabase anon key>
+  ```
 ### Running the App
 
 Start the project with Expo by running:
