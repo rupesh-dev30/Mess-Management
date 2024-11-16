@@ -71,10 +71,10 @@ export default function ProductDetails() {
           <View style={styles.descriptionSection}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>
-              "Experience premium quality with our signature product. Made with
+              Experience premium quality with our signature product. Made with
               the finest materials and expert craftsmanship, this item combines
               style, durability, and functionality. Perfect for everyday use and
-              designed to exceed your expectations."
+              designed to exceed your expectations.
             </Text>
           </View>
         </View>
