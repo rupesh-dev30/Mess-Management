@@ -79,7 +79,7 @@ export type Database = {
             referencedColumns: ["id"];
           }
         ];
-      };
+      } | null;
       products: {
         Row: {
           created_at: string;
