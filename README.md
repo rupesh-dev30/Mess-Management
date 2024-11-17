@@ -102,7 +102,3 @@ Contributions are welcome! If you have improvements or ideas, feel free to fork 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-Thank you for exploring this project! We hope this mess management application meets your needs.
